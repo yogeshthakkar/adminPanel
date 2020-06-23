@@ -20,6 +20,7 @@ const Users = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
+<<<<<<< HEAD
   
   let loginResponse, adminid, token
   loginResponse = JSON.parse((localStorage.getItem('loginResponse')))
@@ -61,6 +62,21 @@ const Users = () => {
       }).catch((err) => {
         console.log('error', err);
       });
+=======
+
+  const fetchData = async (page = 1, limit = 10) => {
+    const countData = await api(`user/count`, {}, 'get');
+    console.log('countdata', countData);
+
+    const response = await api(`user?page=${page}&limit=${limit}`, {}, 'get');
+    console.log('user Response', response);
+    if (response.status === 200) {
+      setUsers(response.data.data);
+      setPages(Math.ceil(countData.data.data / limit));
+      setPage(page);
+      setLimit(limit);
+    }
+>>>>>>> d6ee3b01ca2052c7d87fcbfa8a030545ac8a5727
   };
 
   // handle View toggle
@@ -98,6 +114,7 @@ const Users = () => {
     console.log('table change data', data);
     await fetchData(data.page + 1, data.pageSize);
   };
+<<<<<<< HEAD
   const handleSearch = async (event) => {
     event.preventDefault();
     let search = event.target.value
@@ -111,6 +128,9 @@ const Users = () => {
     setUsers(response.data.data);
 
   }
+=======
+
+>>>>>>> d6ee3b01ca2052c7d87fcbfa8a030545ac8a5727
   const [columns] = useState([
     {
       Header: 'Avatar',
@@ -170,15 +190,13 @@ const Users = () => {
             {/*<Button.Ripple
               className="btn-icon rounded-circle"
               color="flat-success"
+              onClick={() => viewToggle(original)}
             >
-              <Eye
-                style={{ cursor: 'pointer' }}
-                size={22}
-                onClick={() => viewToggle(original)}
-              />
+              <Eye style={{ cursor: 'pointer' }} size={22} />
             </Button.Ripple>
             */}
             <>
+<<<<<<< HEAD
 
               <a
                 onClick={() => {
@@ -191,6 +209,23 @@ const Users = () => {
               >
                 <Edit style={{ cursor: 'pointer' }} size={22} />
               </a>
+=======
+              <Button.Ripple
+                className="btn-icon rounded-circle"
+                color="flat-warning"
+              >
+                <NavLink
+                  title="Edit"
+                  to={{
+                    pathname: '/user/edit',
+                    state: { ...original },
+                  }}
+                  className="btn-flat-warning"
+                >
+                  <Edit style={{ cursor: 'pointer' }} size={22} />
+                </NavLink>
+              </Button.Ripple>
+>>>>>>> d6ee3b01ca2052c7d87fcbfa8a030545ac8a5727
               <Button.Ripple
                 className="btn-icon rounded-circle"
                 color="flat-danger"
@@ -216,6 +251,7 @@ const Users = () => {
     <div>
       <Card>
         <CardHeader>
+<<<<<<< HEAD
           <h2>
             Users
             <span>
@@ -230,7 +266,12 @@ const Users = () => {
               </Col>
             </span>
           </h2>
+=======
+          <h2>Users</h2>
+          <Button.Ripple className="primary">create</Button.Ripple>
+>>>>>>> d6ee3b01ca2052c7d87fcbfa8a030545ac8a5727
         </CardHeader>
+
         <CardBody>
           <Table
             columns={columns}

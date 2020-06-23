@@ -2,21 +2,23 @@
 import axios from 'axios';
 // import { toast } from 'react-redux-toast';
 import { toast } from 'react-toastify';
+import { setIsLoading } from '../redux/actions/layoutAction';
 
 // import internal(own) modules
-// import { store } from '../redux/storeConfig/store';
+import { store } from '../redux/storeConfig/store';
 // import { logout } from '../redux/actions/userAction';
 // import { setIsLoading } from '../redux/actions/layoutAction';
 
-const mainUrl = 'http://localhost:1337/v0';
-// const mainUrl = 'http://176.9.19.106:1337/v0';
+// const mainUrl = 'http://localhost:1337/v0';
+const mainUrl = 'http://176.9.19.106:1337/v0';
 
 export const api = async (endpoint, data, type) => {
   let response;
   // const { user } = store.getState().user;
   let token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJzdXBlckB1c2VyLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTU5MTg1NjQzMiwiZXhwIjoxNTkyNDYxMjMyfQ.Sh-hdgZF9tpjLbR0hv92Aj9Cj5mdGtjpxB8PEG37lfQ';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJzdXBlckB1c2VyLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTU5MTg3MzgyMywiZXhwIjoxNTkyNDc4NjIzfQ.VOGmmvnksmRwvfik3LmdyrFsI-N3OZw3OhqCIHCz8bc';
   // if (user) token = user.token;
+  store.dispatch(setIsLoading(true));
   let headers = { 'Content-Type': 'application/json' };
   try {
     switch (type) {
@@ -32,7 +34,7 @@ export const api = async (endpoint, data, type) => {
           .catch((error) => {
             console.log('error', { error });
             if (error.response.status === 400) {
-              toast.error('Invalid credentials', error.response.data.message);
+              toast.error('Invalid credentials');
             }
             response = error.response;
           });
@@ -78,7 +80,7 @@ export const api = async (endpoint, data, type) => {
   } catch (error) {
     console.log('error', { error });
     if (error.response.status === 400) {
-      toast.error('Error message', error.response.data.message);
+      toast.error('Error message');
     }
     if (
       error.response.status === 401 ||
@@ -90,6 +92,6 @@ export const api = async (endpoint, data, type) => {
     }
     response = error.response;
   }
-  // store.dispatch(setIsLoading(false));
+  store.dispatch(setIsLoading(false));
   return response;
 };

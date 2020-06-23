@@ -86,9 +86,11 @@ const RouteConfig = ({
   component: Component,
   fullLayout,
   permission,
+  isLoading,
   user,
   ...rest
 }) => (
+<<<<<<< HEAD
     <Route
       {...rest}
       render={props => {
@@ -119,6 +121,44 @@ const mapStateToProps = state => {
     user: state.auth.login.userRole
   }
 }
+=======
+  <Route
+    {...rest}
+    render={(props) => {
+      return (
+        <ContextLayout.Consumer>
+          {(context) => {
+            let LayoutTag =
+              fullLayout === true
+                ? context.fullLayout
+                : context.state.activeLayout === 'horizontal'
+                ? context.horizontalLayout
+                : context.VerticalLayout;
+            return (
+              <LayoutTag {...props} permission={props.user}>
+                <Suspense fallback={<Spinner />}>
+                  {isLoading && (
+                    <div className="data-loading">
+                      <Spinner />
+                    </div>
+                  )}
+                  <Component {...props} />
+                </Suspense>
+              </LayoutTag>
+            );
+          }}
+        </ContextLayout.Consumer>
+      );
+    }}
+  />
+);
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.login.userRole,
+    isLoading: state.layout.isLoading,
+  };
+};
+>>>>>>> d6ee3b01ca2052c7d87fcbfa8a030545ac8a5727
 
 const AppRoute = connect(mapStateToProps)(RouteConfig)
 
