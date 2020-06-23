@@ -1,23 +1,23 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import ReactDOM from "react-dom";
 
-class Box extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      allChecked: false,
+function Box(){
+  let [newList,setNewList] = useState([])
+  let [state1,setState1]=useState({
+    allChecked: false,
       list: [
         { id: 1, name: "item1", isChecked: false },
         { id: 2, name: "item2", isChecked: false },
         { id: 3, name: "item3", isChecked: false }
       ]
-    };
-  }
+    })
+     
+  
 
-  handleChange = e => {
+ const handleChange = e => {
     let itemName = e.target.name;
     let checked = e.target.checked;
-    this.setState(prevState => {
+    setState1(prevState => {
       let { list, allChecked } = prevState;
       if (itemName === "checkAll") {
         allChecked = checked;
@@ -25,6 +25,7 @@ class Box extends Component {
       } else {
         list = list.map(item =>
           item.name === itemName ? { ...item, isChecked: checked } : item
+          
         );
         allChecked = list.every(item => item.isChecked);
       }
@@ -32,36 +33,45 @@ class Box extends Component {
     });
   };
 
-  renderList = () => {
-    return this.state.list.map(item => (
-      <div>
-        <input
-          key={item.id}
-          type="checkbox"
-          name={item.name}
-          value={item.name}
-          checked={item.isChecked}
-          onChange={this.handleChange}
-        />
-        <label>{item.name}</label>
-      </div>
-    ));
-  };
-  render() {
     return (
       <div>
         <input
           type="checkbox"
           name="checkAll"
-          checked={this.state.allChecked}
-          onChange={this.handleChange}
+          checked={state1.allChecked}
+          onChange={handleChange}
         />
         Check all
         <br />
-        {this.renderList()}
+        { state1.list.map(item => (
+          <div>
+            <input
+              key={item.id}
+              type="checkbox"
+              name={item.name}
+              value={item.name}
+              checked={item.isChecked}
+              onChange={handleChange}
+            />
+            <label>{item.name}</label>
+          </div>
+        ))
+      }
+      {
+      state1.allChecked=== true?
+        <button>'Export1'</button>
+        :''
+    }
+   {
+     state1.list.map((l)=>{
+       /*eslint-disable*/
+      l.isChecked?
+      console.log(l)
+      :''
+     })     
+    }
       </div>
     );
   }
-}
 
 ReactDOM.render(<Box />, document.getElementById("root"));
