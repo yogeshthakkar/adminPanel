@@ -16,9 +16,10 @@ const Users = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
 
-  const fetchData = async (page = 1, limit = 20) => {
+  const fetchData = async (page = 1, limit = 10) => {
     const countData = await api(`user/count`, {}, 'get');
     console.log('countdata', countData);
+
     const response = await api(`user?page=${page}&limit=${limit}`, {}, 'get');
     console.log('user Response', response);
     if (response.status === 200) {
@@ -54,6 +55,7 @@ const Users = () => {
     console.log('table change data', data);
     await fetchData(data.page + 1, data.pageSize);
   };
+
   const [columns] = useState([
     {
       Header: 'First Name',
@@ -77,25 +79,26 @@ const Users = () => {
             <Button.Ripple
               className="btn-icon rounded-circle"
               color="flat-success"
+              onClick={() => viewToggle(original)}
             >
-              <Eye
-                style={{ cursor: 'pointer' }}
-                size={22}
-                onClick={() => viewToggle(original)}
-              />
+              <Eye style={{ cursor: 'pointer' }} size={22} />
             </Button.Ripple>
             <>
-              <NavLink
-                title="Edit"
-                to={{
-                  pathname: '/user/edit',
-                  state: { ...original },
-                }}
+              <Button.Ripple
                 className="btn-icon rounded-circle"
                 color="flat-warning"
               >
-                <Edit style={{ cursor: 'pointer' }} size={22} />
-              </NavLink>
+                <NavLink
+                  title="Edit"
+                  to={{
+                    pathname: '/user/edit',
+                    state: { ...original },
+                  }}
+                  className="btn-flat-warning"
+                >
+                  <Edit style={{ cursor: 'pointer' }} size={22} />
+                </NavLink>
+              </Button.Ripple>
               <Button.Ripple
                 className="btn-icon rounded-circle"
                 color="flat-danger"
@@ -122,7 +125,9 @@ const Users = () => {
       <Card>
         <CardHeader>
           <h2>Users</h2>
+          <Button.Ripple className="primary">create</Button.Ripple>
         </CardHeader>
+
         <CardBody>
           <Table
             columns={columns}

@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom';
 import { FormGroup, Label, Button, Row, Col } from 'reactstrap';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
+import { Spinner } from 'reactstrap';
+import { useSelector } from 'react-redux';
 
 // /^[a-zA-Z0-9._'-? ]*$/
 
@@ -16,6 +18,8 @@ const formSchema = Yup.object().shape({
 });
 
 const UserForm = ({ firstName, email, lastName, handleSubmit, edit, user }) => {
+  const { layout } = useSelector((state) => state);
+  const { isLoading } = layout;
   return (
     <Formik
       initialValues={{
@@ -99,8 +103,17 @@ const UserForm = ({ firstName, email, lastName, handleSubmit, edit, user }) => {
               </FormGroup>
             </Col>
             <Col md="12" sm="12" className="text-right">
-              <Button type="submit" color="primary" className="round">
-                {'Submit'}
+              <Button
+                type="submit"
+                color="primary"
+                disabled={isLoading ? true : false}
+                className="round"
+              >
+                {isLoading && <Spinner color="white" size="sm" />}
+                <span className="ml-50">
+                  {' '}
+                  {isLoading ? 'Loading...' : 'Submit'}
+                </span>
               </Button>
               <NavLink
                 to={user ? '/dashboard' : '/users'}

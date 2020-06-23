@@ -20,6 +20,7 @@ const RouteConfig = ({
   component: Component,
   fullLayout,
   permission,
+  isLoading,
   user,
   ...rest
 }) => (
@@ -38,6 +39,11 @@ const RouteConfig = ({
             return (
               <LayoutTag {...props} permission={props.user}>
                 <Suspense fallback={<Spinner />}>
+                  {isLoading && (
+                    <div className="data-loading">
+                      <Spinner />
+                    </div>
+                  )}
                   <Component {...props} />
                 </Suspense>
               </LayoutTag>
@@ -51,6 +57,7 @@ const RouteConfig = ({
 const mapStateToProps = (state) => {
   return {
     user: state.auth.login.userRole,
+    isLoading: state.layout.isLoading,
   };
 };
 

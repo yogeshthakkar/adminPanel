@@ -9,7 +9,6 @@ import { api } from '../../services/api';
 import { history } from '../../history';
 
 const EditUser = () => {
-  console.log('histpry locayion', history.location);
   const [user] = useState(history.location.state);
 
   const handleSubmit = async ({ firstName }) => {
