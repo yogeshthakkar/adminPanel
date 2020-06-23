@@ -20,11 +20,13 @@ function ArticleFrom(props) {
   //   setData(props.data)
   //   console.log(props.data);
   // }
-    console.log(props.data);
+  console.log(props.data);
+
 
   let loginResponse = JSON.parse((localStorage.getItem('loginResponse')))
   let token = loginResponse.token
   let adminid = loginResponse.id
+  let userDetails = JSON.parse((localStorage.getItem('UserDeatils')))
 
   async function onload(event) {
     event.preventDefault()
@@ -73,19 +75,19 @@ function ArticleFrom(props) {
   return (
     <Formik
       initialValues={{
-       ...props.data
+        ...props.data
 
       }}
       validationSchema={Yup.object().shape({
         content: Yup.string()
           .typeError('content must be String')
           .required('Content is need'),
-        wordpressPostId:Yup.number()
-        .typeError('Word Press Id is Required')
+        wordpressPostId: Yup.number()
+          .typeError('Word Press Id is Required')
 
       })}
       onSubmit={props.handleSubmit}
-      render={({ errors, status,setFieldValue, touched, handleSubmit }) => (
+      render={({ errors, status, setFieldValue, touched, handleSubmit }) => (
         <Form>
           <div className="form-group">
             <label htmlFor="title">Title</label>
@@ -98,7 +100,7 @@ function ArticleFrom(props) {
 
           <div className="form-group">
             <label htmlFor="content">Content</label>
-            <Field name="content" type="text" className={'form-control' + (errors.content ? ' is-invalid' : '')} />
+            <Field name="content" type="textarea" className={'form-control' + (errors.content ? ' is-invalid' : '')} />
             <ErrorMessage name="content" component="div" className="invalid-feedback" />
           </div>
 
@@ -116,6 +118,25 @@ function ArticleFrom(props) {
               : ''
             }
           </div>
+          <div>
+            <label htmlFor="userId">User Id </label>
+            <Field as="select" name="userId"
+              className={'form-control'} >
+              <option onChange={selectedOptions => {
+                setFieldValue("userId", userDetails.data)
+              }}>Select</option>
+
+              {userDetails.data.map((val) =>
+                <option
+                  onChange={selectedOptions => {
+                    setFieldValue("userId", selectedOptions)
+                  }}
+                  key={val.id}
+                  value={val.id}>{val.email}</option>
+              )
+              }
+            </Field>
+          </div>
 
           <div>
             <FormGroup>
@@ -127,19 +148,19 @@ function ArticleFrom(props) {
                 onChange={onload}
                 multiple
               >
-              <option >Select</option>
+                <option >Select</option>
                 {data.map((val) =>
-                  <option key={val.id}>{val.id}</option>
+                  <option key={val.id}>{val.name}</option>
                 )}
               </Input>
             </FormGroup>
           </div>
-              
+
           <div className="form-group">
             <label htmlFor="wordpressPostId">Word Press ID</label>
-            <Field name="wordpressPostId" 
-            type="number" 
-            className={'form-control' + (errors.wordpressPostId ? ' is-invalid' : '')} />
+            <Field name="wordpressPostId"
+              type="number"
+              className={'form-control' + (errors.wordpressPostId ? ' is-invalid' : '')} />
             <ErrorMessage name="content" component="div" className="invalid-feedback" />
           </div>
 
@@ -152,30 +173,30 @@ function ArticleFrom(props) {
           <div className="form-group">
             <label htmlFor="articleType">Article Type</label>
             <Field as="select" name="articleType"
-              className={'form-control'} 
+              className={'form-control'}
             >
-              <option 
-              value="default" 
-              onChange={selectedOptions => {
-                setFieldValue("articleType", selectedOptions)
-              }}
+              <option
+                value="default"
+                onChange={selectedOptions => {
+                  setFieldValue("articleType", selectedOptions)
+                }}
               >Default</option>
 
-              <option 
-              value='sponsored' 
-              onChange={selectedOptions => {
-                setFieldValue("articleType", selectedOptions)
-              }}
+              <option
+                value='sponsored'
+                onChange={selectedOptions => {
+                  setFieldValue("articleType", selectedOptions)
+                }}
               >Sponsored</option>
 
-              <option 
-              value='advert' 
-              onChange={selectedOptions => {
-                setFieldValue("articleType", selectedOptions)
-              }}
+              <option
+                value='advert'
+                onChange={selectedOptions => {
+                  setFieldValue("articleType", selectedOptions)
+                }}
               >Anzeige</option>
-             
-            </Field>     
+
+            </Field>
           </div>
 
           <div className="form-group">
@@ -199,7 +220,7 @@ ArticleFrom.defaultProps = {
   expirationDate: '',
   wordpressPostId: '',
   status: '',
-  articleType: '',  
+  articleType: '',
   handleSubmit: () => { }
 };
 export default ArticleFrom;

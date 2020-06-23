@@ -17,6 +17,8 @@ function EditNewsFeed(props) {
     console.log(props.location.state.state);
     let loginResponse = JSON.parse((localStorage.getItem('loginResponse')))
     let token = loginResponse.token
+    let userDetails = JSON.parse((localStorage.getItem('UserDeatils')))
+
     const handleImageUpload = async (event) => {
         let reader = new FileReader();
         let file = event.target.files[0];
@@ -106,6 +108,26 @@ function EditNewsFeed(props) {
                         <label htmlFor="description">description</label>
                         <Field name="description" type="textarea" className={'form-control' + (errors.description ? ' is-invalid' : '')} />
                         <ErrorMessage name="description" component="div" className="invalid-feedback" />
+                    </div>
+                    
+                    <div>
+                        <label htmlFor="userId">User Id </label>
+                        <Field as="select" name="userId"
+                            className={'form-control'} >
+                            <option onChange={selectedOptions => {
+                                setFieldValue("userId", userDetails.data)
+                            }}>Select</option>
+
+                            {userDetails.data.map((val) =>
+                                <option
+                                    onChange={selectedOptions => {
+                                        setFieldValue("userId", selectedOptions)
+                                    }}
+                                    key={val.id}
+                                    value={val.id}>{val.email}</option>
+                            )
+                            }
+                        </Field>
                     </div>
 
                     <div className="form-group">

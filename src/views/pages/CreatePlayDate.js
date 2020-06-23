@@ -12,10 +12,10 @@ function CreatePlayDate() {
     token = loginResponse.token
     let data
     const handleSubmit = async (data) => {
-        console.log('Create handleSubmit');       
+        console.log('Create handleSubmit',data);       
 
         let response  = await api(
-            `v0/user/${adminid}/playdate?page=1&limit=10&sort=createdAt DESC`,
+            `v0/user/${data.userId}/playdate?page=1&limit=10&sort=createdAt DESC`,
             data,
             token,
             'post'
@@ -24,7 +24,7 @@ function CreatePlayDate() {
               console.log(response.data);              
             history.push('/playDates')
           }
-          console.log('done');              
+          console.log('done')           
 
     }
     return (

@@ -1,14 +1,12 @@
 import React, { useState } from "react"
-
+import { Trash2, Edit } from "react-feather";
+import { Button } from "reactstrap";
+import Axios from "axios";
 
 import Table from "../../../components/table/Mytable";
 import { api } from "../../../api/api";
 import dummyImage from '../../../../src/assets/img/portrait/small/dummyUser.jpg'
-import { Trash2, Edit } from "react-feather";
-import { Button } from "reactstrap";
-import { history } from "../../../history";
 import ModalComponent from "../../../components/Modal";
-import Axios from "axios";
 
 function ReportedUser() {
     const [itemsData, setItemsData] = useState([])

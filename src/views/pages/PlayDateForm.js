@@ -18,13 +18,6 @@ function PlayDateForm(props) {
 
     console.log(' Article');
 
-
-    // // if (props.update === 'update') {
-    // //   setData(props.data)
-    // //   console.log(props.data);
-    // // }
-    // console.log(props.data);
-
     let loginResponse = JSON.parse((localStorage.getItem('loginResponse')))
     let token = loginResponse.token
     let adminid = loginResponse.id
@@ -62,6 +55,7 @@ function PlayDateForm(props) {
                 ImageId = result.data.data.id
             });
         setFieldValue('avatar', ImageId)
+        console.log('image done')
     }
 
     // setUserData(userDetails.data)
@@ -75,10 +69,12 @@ function PlayDateForm(props) {
             validationSchema={
                 Yup.object().shape({
                     title: Yup.string()
-                        .typeError('content must be String')
-                        .required('Content is need'),
+                        .typeError('title must be String')
+                        .required('title is need'),
                     latitude: Yup.number()
-                        .typeError('Word Press Id is Required')
+                        .typeError('Word Press Id is Required'),
+                    userId: Yup.string()
+                        .required('User ID is Required')
 
                 })}
             onSubmit={props.handleSubmit}
@@ -96,7 +92,7 @@ function PlayDateForm(props) {
 
                     <div className="form-group">
                         <label htmlFor="description">Description</label>
-                        <Field name="description" type="text" className={'form-control' + (errors.description ? ' is-invalid' : '')} />
+                        <Field name="description" type="textarea" className={'form-control' + (errors.description ? ' is-invalid' : '')} />
                         <ErrorMessage name="description" component="div" className="invalid-feedback" />
                     </div>
 
@@ -104,7 +100,7 @@ function PlayDateForm(props) {
                         <label htmlFor="image">Image</label>
                         <Field name="image" type="file"
                             value={null}
-                            onChange={handleChange}
+                            onChange={(event) => handleChange(event, setFieldValue)}
                             className={'form-control'} />
                         {showAvatar.avatar.length > 0
                             ? <img alt='preview'
@@ -139,9 +135,10 @@ function PlayDateForm(props) {
                             {userDetails.data.map((val) =>
                                 <option
                                     onChange={selectedOptions => {
-                                        setFieldValue("userId", userDetails.data)
+                                        setFieldValue("userId", selectedOptions)
                                     }}
-                                    key={val.id}>{val.email}</option>
+                                    key={val.id}
+                                    value={val.id}>{val.email}</option>
                             )
                             }
                         </Field>
@@ -149,13 +146,25 @@ function PlayDateForm(props) {
 
                     <div className="form-group">
                         <label htmlFor="start">start</label>
-                        <Field name="start" type="date" className={'form-control' + (errors.start ? ' is-invalid' : '')} />
+                        <Field name="start" type="date"
+                            onChange={(e) => {
+                                let start = e.target.value;                                
+                                if (start) start = parseInt((new Date(start).getTime() / 1000))
+                                setFieldValue('start', start);
+                            }}
+                            className={'form-control' + (errors.start ? ' is-invalid' : '')} />
                         <ErrorMessage name="start" component="div" className="invalid-feedback" />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="end">end</label>
-                        <Field name="end" type="date" className={'form-control' + (errors.end ? ' is-invalid' : '')} />
+                        <Field name="end" type="date"
+                            onChange={(e) => {
+                                let end = e.target.value;
+                                if (end) end = parseInt((new Date(end).getTime() / 1000))
+                                setFieldValue('end', end);
+                            }}
+                            className={'form-control' + (errors.end ? ' is-invalid' : '')} />
                         <ErrorMessage name="end" component="div" className="invalid-feedback" />
                     </div>
 

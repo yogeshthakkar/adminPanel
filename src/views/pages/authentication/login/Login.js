@@ -44,7 +44,6 @@ function Login() {
       data,
       null,
       'postPassWithoutToken'
-
     )
     if (response) {
       // result.data.data.id
@@ -54,7 +53,7 @@ function Login() {
         localStorage.getItem('loginResponse')
 
       );
-
+        
       setMessage({
         alertMessage: response.data.message
       })

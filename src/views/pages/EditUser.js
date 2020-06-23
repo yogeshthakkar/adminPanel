@@ -8,7 +8,6 @@ import { history } from '../../history';
 import { api } from '../../api/api';
 
 const EditUser = () => {
-<<<<<<< HEAD
     let loginResponse, token
     loginResponse = JSON.parse((localStorage.getItem('loginResponse')))
     // adminid = loginResponse.id
@@ -19,16 +18,6 @@ const EditUser = () => {
     const handleChange = (event) => {
         // alert('called')
         event.preventDefault()
-=======
-  const [user] = useState(history.location.state);
-
-  const handleSubmit = async ({ firstName }) => {
-    const { id } = user;
-    const response = await api(`user/${id}`, { firstName }, 'patch');
-    if (response.status === 200) {
-      toast.success(`User Updated`);
-      history.push('/users');
->>>>>>> d6ee3b01ca2052c7d87fcbfa8a030545ac8a5727
     }
     const handleSubmit = async (user) => {
     

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import * as Icon from 'react-feather'
 
 import { history } from "../../history";
@@ -21,6 +21,21 @@ function NewsFeed() {
     loginResponse = JSON.parse((localStorage.getItem('loginResponse')))
     adminid = loginResponse.id
     token = loginResponse.token
+
+    // set User Details
+    useEffect(() => {
+        const fetchData = async () => {
+          const result =  await api(
+            `v0/user?page=1&limit=10&sort=firstName`,
+            null,
+            token,
+            'get'
+        );
+        localStorage.setItem('UserDeatils',JSON.stringify(result.data))
+        };
+     
+        fetchData();
+      }, []);
 
     const handleNewsFeedList = async (data) => {
         await fetchData(data.page + 1, data.pageSize);
