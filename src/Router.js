@@ -10,9 +10,6 @@ const Home = lazy(() =>
   import("./views/pages/Home")
 )
 
-const Page2 = lazy(() =>
-  import("./views/pages/Page2")
-)
 const Page3 = lazy(() =>
   import('./views/pages/Page3')
 )
